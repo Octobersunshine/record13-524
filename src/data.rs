@@ -1,5 +1,11 @@
 use crate::models::{SettlementItem, SettlementStatus, SupplierSettlement};
+use rust_decimal::Decimal;
+use std::str::FromStr;
 use uuid::Uuid;
+
+fn dec(value: &str) -> Decimal {
+    Decimal::from_str(value).expect("Invalid decimal value")
+}
 
 pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
     vec![
@@ -9,7 +15,7 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
             supplier_id: "SUP-001".to_string(),
             supplier_name: "华东电子科技有限公司".to_string(),
             status: SettlementStatus::Confirmed,
-            total_amount: 125800.00,
+            total_amount: dec("125800.00"),
             settlement_date: "2024-01-15".to_string(),
             due_date: "2024-02-15".to_string(),
             items: vec![
@@ -17,15 +23,15 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
                     item_id: Uuid::new_v4(),
                     product_name: "集成电路芯片".to_string(),
                     quantity: 1000,
-                    unit_price: 100.00,
-                    amount: 100000.00,
+                    unit_price: dec("100.00"),
+                    amount: dec("100000.00"),
                 },
                 SettlementItem {
                     item_id: Uuid::new_v4(),
                     product_name: "电阻电容包".to_string(),
                     quantity: 500,
-                    unit_price: 51.60,
-                    amount: 25800.00,
+                    unit_price: dec("51.60"),
+                    amount: dec("25800.00"),
                 },
             ],
             created_at: "2024-01-10T10:00:00Z".to_string(),
@@ -37,7 +43,7 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
             supplier_id: "SUP-002".to_string(),
             supplier_name: "华南五金制品厂".to_string(),
             status: SettlementStatus::Paid,
-            total_amount: 45600.00,
+            total_amount: dec("45600.00"),
             settlement_date: "2024-01-20".to_string(),
             due_date: "2024-02-20".to_string(),
             items: vec![
@@ -45,15 +51,15 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
                     item_id: Uuid::new_v4(),
                     product_name: "不锈钢螺丝".to_string(),
                     quantity: 10000,
-                    unit_price: 2.50,
-                    amount: 25000.00,
+                    unit_price: dec("2.50"),
+                    amount: dec("25000.00"),
                 },
                 SettlementItem {
                     item_id: Uuid::new_v4(),
                     product_name: "金属垫片".to_string(),
                     quantity: 5000,
-                    unit_price: 4.12,
-                    amount: 20600.00,
+                    unit_price: dec("4.12"),
+                    amount: dec("20600.00"),
                 },
             ],
             created_at: "2024-01-18T09:00:00Z".to_string(),
@@ -65,7 +71,7 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
             supplier_id: "SUP-001".to_string(),
             supplier_name: "华东电子科技有限公司".to_string(),
             status: SettlementStatus::Void,
-            total_amount: 88000.00,
+            total_amount: dec("88000.00"),
             settlement_date: "2024-01-25".to_string(),
             due_date: "2024-02-25".to_string(),
             items: vec![
@@ -73,8 +79,8 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
                     item_id: Uuid::new_v4(),
                     product_name: "连接线束".to_string(),
                     quantity: 2000,
-                    unit_price: 44.00,
-                    amount: 88000.00,
+                    unit_price: dec("44.00"),
+                    amount: dec("88000.00"),
                 },
             ],
             created_at: "2024-01-22T15:00:00Z".to_string(),
@@ -86,7 +92,7 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
             supplier_id: "SUP-003".to_string(),
             supplier_name: "华北塑料制品有限公司".to_string(),
             status: SettlementStatus::Draft,
-            total_amount: 32000.00,
+            total_amount: dec("32000.00"),
             settlement_date: "2024-02-01".to_string(),
             due_date: "2024-03-01".to_string(),
             items: vec![
@@ -94,8 +100,8 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
                     item_id: Uuid::new_v4(),
                     product_name: "塑料外壳".to_string(),
                     quantity: 4000,
-                    unit_price: 8.00,
-                    amount: 32000.00,
+                    unit_price: dec("8.00"),
+                    amount: dec("32000.00"),
                 },
             ],
             created_at: "2024-01-28T10:00:00Z".to_string(),
@@ -107,7 +113,7 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
             supplier_id: "SUP-002".to_string(),
             supplier_name: "华南五金制品厂".to_string(),
             status: SettlementStatus::Void,
-            total_amount: 15000.00,
+            total_amount: dec("15000.00"),
             settlement_date: "2024-02-05".to_string(),
             due_date: "2024-03-05".to_string(),
             items: vec![
@@ -115,8 +121,8 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
                     item_id: Uuid::new_v4(),
                     product_name: "铜制接头".to_string(),
                     quantity: 3000,
-                    unit_price: 5.00,
-                    amount: 15000.00,
+                    unit_price: dec("5.00"),
+                    amount: dec("15000.00"),
                 },
             ],
             created_at: "2024-02-01T14:00:00Z".to_string(),
@@ -128,7 +134,7 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
             supplier_id: "SUP-004".to_string(),
             supplier_name: "西南化工原料有限公司".to_string(),
             status: SettlementStatus::Confirmed,
-            total_amount: 67500.00,
+            total_amount: dec("67500.00"),
             settlement_date: "2024-02-10".to_string(),
             due_date: "2024-03-10".to_string(),
             items: vec![
@@ -136,8 +142,8 @@ pub fn create_sample_settlements() -> Vec<SupplierSettlement> {
                     item_id: Uuid::new_v4(),
                     product_name: "工业清洗剂".to_string(),
                     quantity: 500,
-                    unit_price: 135.00,
-                    amount: 67500.00,
+                    unit_price: dec("135.00"),
+                    amount: dec("67500.00"),
                 },
             ],
             created_at: "2024-02-08T09:30:00Z".to_string(),

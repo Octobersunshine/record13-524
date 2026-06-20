@@ -3,7 +3,7 @@ mod repository;
 mod handlers;
 mod data;
 
-use repository::SettlementStore;
+use repository::{SettlementStore, sum_total_amount, validate_amount_consistency};
 use handlers::create_router;
 use data::create_sample_settlements;
 use std::sync::Arc;
@@ -22,6 +22,31 @@ async fn main() {
         .init();
 
     let settlements = create_sample_settlements();
+
+    tracing::info!("开始校验结算单金额精度...");
+    let mut has_error = false;
+    for s in &settlements {
+        match validate_amount_consistency(s) {
+            Ok(()) => {
+                tracing::info!("  {} [{}] 金额校验通过, 合计: {}", s.settlement_no, s.supplier_name, s.total_amount);
+            }
+            Err(e) => {
+                has_error = true;
+                tracing::error!("  {} [{}] 金额校验失败: {}", s.settlement_no, s.supplier_name, e);
+            }
+        }
+    }
+    if has_error {
+        tracing::warn!("存在金额校验失败的单据，请检查数据准确性");
+    } else {
+        tracing::info!("所有单据金额校验通过，精度完整无误");
+    }
+
+    let all_total = sum_total_amount(&settlements);
+    let valid_total = sum_total_amount(
+        &settlements.iter().filter(|s| s.status.is_valid()).cloned().collect::<Vec<_>>()
+    );
+
     let store: SettlementStore = Arc::new(Mutex::new(settlements));
 
     let total = store.lock().await.len();
@@ -30,6 +55,8 @@ async fn main() {
 
     tracing::info!("已加载 {} 条供应商结算单", total);
     tracing::info!("其中有效单据: {} 条, 作废单据: {} 条", valid_count, void_count);
+    tracing::info!("全部单据总金额: {} 元", all_total);
+    tracing::info!("有效单据总金额: {} 元", valid_total);
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
